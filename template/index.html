@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}Resume | Shubham Prasad Pednekar{% endblock %}
+
+{% block body %}
+<div class="name">
+    {{ data.name }}
+</div>
+{% if data.links %}
+<div class="links">
+    {% if 'location' in data.links %}
+    <a class="location">
+        {{ data.links.location }}
+    </a>
+    <div class="seperator">|</div>
+    {% endif %}
+    {% if 'email' in data.links %}
+    <a class="email" href="mailto:{{ data.links.email }}">
+        {{ data.links.email }}
+    </a>
+    <div class="seperator">|</div>
+    {% endif %}
+    {% if 'phone' in data.links %}
+    <a class="phone" href="tel:+1{{ data.links.phone }}">
+        +1 ({{ data.links.phone[:3] }}) {{ data.links.phone[3:6] }} {{ data.links.phone[6:] }}
+    </a>
+    <div class="seperator">|</div>
+    {% endif %}
+    {% if 'linkedin' in data.links %}
+    <a class="linkedin" rel="noopener noreferrer" href="{{ data.links.linkedin }}">
+        LinkedIn
+    </a>
+    <div class="seperator">|</div>
+    {% endif %}
+    {% if 'github' in data.links %}
+    <a class="github" rel="noopener noreferrer" href="{{ data.links.github }}">
+        Github
+    </a>
+    {% endif %}
+</div>
+{% endif %}
+<div class="section">
+    <div class="section-name">
+        <hr>
+        <div class="section-name-text">EXPERIENCE</div>
+        <hr>
+    </div>
+    {% for experience in data.experiences %}
+    <div class="section-item">
+        <div class="row section-item-header">
+            <div class="col-auto section-item-title">{{ experience.role }}</div>
+            <div class="seperator col-auto">|</div>
+            <div class="col-auto section-item-subtitle">{{ experience.organisation }}</div>
+            <div class="col-auto ms-auto section-item-date">{{ experience.start }} - {{ experience.end or 'Present' }}
+            </div>
+        </div>
+        <ul class="section-body">
+            {% for bullet in experience.bullets %}
+            <li>{{ bullet }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endfor %}
+
+    <div>
+        <div class="section-name">
+            <hr>
+            <div>EDUCATION</div>
+            <hr>
+        </div>
+        <div class="section-item">
+            {% for education in data.educations %}
+            <div class="row section-item-header">
+                <div class="col-auto section-item-title">{{ education.degree }}</div>
+                <div class="seperator col-auto">|</div>
+                <div class="col-auto section-item-subtitle">{{ education.organisation }}</div>
+                <div class="col-auto ms-auto section-item-date">{{ education.start }} - {{ education.end or 'Present' }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div>
+        <div class="section-name">
+            <hr>
+            <div>SKILLS</div>
+            <hr>
+        </div>
+        <div class="section-item">
+            <div class="row">
+                {{ data.skills | join(', ') }}
+            </div>
+        </div>
+    </div>
+    {% endblock %}

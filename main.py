@@ -45,6 +45,7 @@ subprocess.run([
     "--headless",
     "--disable-gpu",
     f"--print-to-pdf={output_pdf}",
+    "--no-margins",
     f"file:///{html_file}"
 ])
 

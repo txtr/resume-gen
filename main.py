@@ -17,7 +17,34 @@ env = Environment(loader=FileSystemLoader('template'))
 template = env.get_template('index.html')
 
 # Render the template with data
-rendered = template.render(data=data)
+def replace_tags(text):
+    output = []
+    stack = []
+    i = 0
+    while i < len(text):
+        if text[i:i+2] == '<%':
+            if stack:
+                raise ValueError("Nested or overlapping '<%' found at position {}".format(i))
+            stack.append(i)
+            output.append('<b>')
+            i += 2
+        elif text[i:i+2] == '%>':
+            if not stack:
+                raise ValueError("Unmatched '%>' found at position {}".format(i))
+            stack.pop()
+            output.append('</b>')
+            i += 2
+        else:
+            output.append(text[i])
+            i += 1
+
+    if stack:
+        raise ValueError("Unmatched '<%' found at position {}".format(stack[-1]))
+
+    return ''.join(output)
+
+
+rendered = replace_tags(template.render(data=data))
 
 build_uuid = str(uuid.uuid4())
 
@@ -33,6 +60,7 @@ with open(filename, 'w', encoding='utf-8') as f:
     f.write(rendered)
 
 print(f"Rendered HTML saved to {filename}")
+
 
 html_file = filename
 output_pdf = os.path.join(build_directory, "resume.pdf")

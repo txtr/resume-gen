@@ -1,0 +1,112 @@
+@media print {
+    @page {
+        margin: 0;
+    }
+
+    body {
+        margin: auto;
+    }
+}
+
+html {
+    font-family: "Roboto", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings: "wdth" 100;
+    font-size: {{ data.spacing.font_size }};
+    background-color: black;
+}
+
+body {
+    height: 11in;
+    width: 8.5in;
+    background-color: white;
+    padding: {{ data.spacing.margin }};
+    margin: auto;
+}
+
+div {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding: 0px;
+    border: 0px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+li,
+a {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding: 0px;
+    border: 0px;
+}
+
+ul {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding: 0px;
+    border: 0px;
+    margin-left: 0.2in !important;
+}
+
+
+hr {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding: 0px;
+}
+
+.name {
+    display: flex;
+    font-size: 13pt;
+    font-weight: 1000;
+    justify-content: center;
+    margin-bottom: {{ data.spacing.below_name }};
+}
+
+.links {
+    display: flex;
+    font-size: 11pt;
+    justify-content: center;
+    margin-bottom: {{ data.spacing.below_links }};
+}
+
+.section-name {
+    font-size: 11pt;
+    font-weight: 1000;
+    margin-bottom: {{ data.spacing.below_section_name }};
+}
+
+.section-item {
+    margin-bottom: {{ data.spacing.below_section_item }};
+}
+
+.section-item-header {
+    color: rgb(0, 81, 173);
+    font-size: 11pt;
+    font-weight: 800;
+    margin-bottom: {{ data.spacing.below_section_header }};
+}
+
+.row {
+    --bs-gutter-x: 0px !important;
+}
+
+.seperator {
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+.section-body {
+    line-height: {{ data.spacing.line_spacing }};
+}
+
+body > div.section > div:nth-child(6) > div.section-item > div:nth-child(1) {
+    margin-bottom: 0.2em !important;
+}

@@ -5,16 +5,20 @@ import yaml
 from jinja2 import Environment, FileSystemLoader
 import webbrowser
 import subprocess
+import shutil
+
+data_file = "data.yaml"
 
 # Load your data from YAML
-with open('data.yaml', 'r') as f:
+with open(data_file, 'r') as f:
     data = yaml.safe_load(f)
 
 # Setup Jinja2 environment with loader pointing to the templates directory
 env = Environment(loader=FileSystemLoader('template'))
 
 # Load your index.html template (which extends base.html)
-template = env.get_template('index.html')
+html_template = env.get_template('index.html')
+css_template = env.get_template('style.css')
 
 # Render the template with data
 def replace_tags(text):
@@ -44,28 +48,33 @@ def replace_tags(text):
     return ''.join(output)
 
 
-rendered = replace_tags(template.render(data=data))
+rendered_html = replace_tags(html_template.render(data=data))
+rendered_css = css_template.render(data=data)
 
 build_uuid = str(uuid.uuid4())
 
 # Ensure build directory exists
 build_directory = os.path.join(os.getcwd(), "build", build_uuid)
+latest_build_directory = os.path.join(os.getcwd(), "build", "latest")
 os.makedirs(build_directory, exist_ok=True)
+os.makedirs(latest_build_directory, exist_ok=True)
 
 # Generate unique filename
-filename = os.path.join(build_directory, "resume.html")
+html_file = os.path.join(build_directory, "resume.html")
+css_file = os.path.join(build_directory, "style.css")
 
-# Write rendered content to file
-with open(filename, 'w', encoding='utf-8') as f:
-    f.write(rendered)
-
-print(f"Rendered HTML saved to {filename}")
+with open(html_file, 'w', encoding='utf-8') as f:
+    f.write(rendered_html)
+print(f"Rendered HTML saved to {html_file}")
 
 
-html_file = filename
+with open(css_file, 'w', encoding='utf-8') as f:
+    f.write(rendered_css)
+print(f"Rendered HTML saved to {html_file}")
+
 output_pdf = os.path.join(build_directory, "resume.pdf")
 
-chrome_path = "/run/current-system/sw/bin/google-chrome-stable"
+chrome_path = "/usr/bin/chromium-browser"
 
 # Run Chrome headless to print to PDF
 subprocess.run([
@@ -76,5 +85,9 @@ subprocess.run([
     "--no-margins",
     f"file:///{html_file}"
 ])
+
+shutil.copy(data_file, os.path.join(build_directory, "data.yaml"))
+
+shutil.copytree(build_directory, latest_build_directory, dirs_exist_ok=True)
 
 print(f"PDF saved to: {output_pdf}")

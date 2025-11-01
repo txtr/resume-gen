@@ -74,7 +74,7 @@ print(f"Rendered HTML saved to {html_file}")
 
 output_pdf = os.path.join(build_directory, "resume.pdf")
 
-chrome_path = "/usr/bin/chromium-browser"
+chrome_path = "/run/current-system/sw/bin/chromium-browser"
 
 # Run Chrome headless to print to PDF
 subprocess.run([
